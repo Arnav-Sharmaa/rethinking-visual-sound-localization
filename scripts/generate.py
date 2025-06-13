@@ -12,12 +12,25 @@ from rethinking_visual_sound_localization.eval_utils import combine_heatmap_img
 from rethinking_visual_sound_localization.models import RCGrad
 
 
+import os
+import time
+
 def get_audio(input_mp4):
-    command = "ffmpeg -i {0}.mp4 -ab 160k -ac 2 -ar 44100 -vn {0}.wav".format(
-        input_mp4.split(".")[0]
-    )
+    wav_path = "{0}.wav".format(input_mp4.split(".")[0])
+    command = f"ffmpeg -y -i \"{input_mp4}\" -ab 160k -ac 2 -ar 44100 -vn \"{wav_path}\""
     subprocess.call(command, shell=True)
-    return "{0}.wav".format(input_mp4.split(".")[0])
+
+    # Wait for the file to be created
+    wait_time = 0
+    while not os.path.exists(wav_path) and wait_time < 10:
+        time.sleep(0.5)
+        wait_time += 0.5
+
+    if not os.path.exists(wav_path):
+        raise FileNotFoundError(f"FFmpeg failed to create WAV file: {wav_path}")
+
+    return wav_path
+
 
 
 def get_fps(input_mp4):
