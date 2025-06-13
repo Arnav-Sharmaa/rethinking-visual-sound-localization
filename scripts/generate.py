@@ -69,7 +69,7 @@ def mix_audio_video(audio_file, video_only_file, audio_video_file):
 
 
 if __name__ == "__main__":
-    input_mp4 = "PATH_TO_MP4_VIDEO_FILE"
+    input_mp4 = "/content/drive/MyDrive/Vehant Samples/Sample_01.mp4"
     output_mp4_prefix = "output"
     fps = int(get_fps(input_mp4))
 
